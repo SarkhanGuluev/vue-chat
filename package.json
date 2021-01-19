@@ -13,7 +13,7 @@
     "firebase": "^8.2.3",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.2",
-    "vue-router": "^3.4.9",
+    "vue-router": "^4.0.3",
     "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
@@ -39,9 +39,7 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {
-      "no-console": false
-    }
+    "rules": {}
   },
   "browserslist": [
     "> 1%",

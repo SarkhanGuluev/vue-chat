@@ -3,12 +3,10 @@
       <div class="login__form">
           <span  @click='closeModal'>&#10006;</span>
           <p>Вход</p>
-          <input v-model="login" type="text" placeholder="login">
+          <input v-model="login" type="text" placeholder="email">
           <input v-model="password" type="text" placeholder="password">
-          <div>
-            <button @click="signIn" >Войти</button>
-            <button @click="signUp" >Создать</button>
-          </div>
+          <button @click="signIn" >Войти</button>
+          <button @click="signUp" >Регистрация</button>
       </div>
   </div>
   <loader v-if="loader" />
@@ -26,34 +24,41 @@ export default {
     }),
     methods: {
         signIn() {
-            this.$store.commit('setLoader', true)
-            firebase
+            if(this.login && this.password) {
+                this.$store.commit('setLoader', true)
+                firebase
+                    .auth()
+                    .signInWithEmailAndPassword(this.login, this.password)
+                    .then(() => {
+                        this.login = ''
+                        this.password = ''
+                        this.$store.commit('setModal', false)
+                        this.$store.commit('setLoader', false)
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        this.$store.commit('setModal', false)
+                        this.$store.commit('setLoader', false)
+                    })
+            } else {
+                alert("Заполните поля!")
+            }
+        },
+        signUp() {
+            if(this.login && this.password) {
+                this.$store.commit('setLoader', true)
+                firebase
                 .auth()
-                .signInWithEmailAndPassword(this.login, this.password)
+                .createUserWithEmailAndPassword(this.login, this.password)    
                 .then(() => {
-                    this.login = ''
-                    this.password = ''
-                    this.$store.commit('setModal', false)
                     this.$store.commit('setLoader', false)
                 })
                 .catch((err) => {
-                    console.error(err)
-                    this.$store.commit('setModal', false)
-                    this.$store.commit('setLoader', false)
+                    throw new Error(err)
                 })
-
-        },
-        signUp() {
-            this.$store.commit('setLoader', true)
-            firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.login, this.password)    
-            .then(() => {
-                 this.$store.commit('setLoader', false)
-            })
-            .catch((err) => {
-                throw new Error(err)
-            })
+            } else {
+                alert("Заполните поля!")
+            }
         },
         closeModal() {
             this.$store.commit('setModal', false)
@@ -62,7 +67,8 @@ export default {
     computed: {
         loader() {
             return this.$store.getters.getLoader
-        }
+        },
+        
     }
 }
 </script>
@@ -118,7 +124,7 @@ export default {
         }
         
         button {
-            width: 5rem;
+            width: 50%;
             background: linear-gradient(
                   to right,
                 rgba(255, 255, 255, .5), 
@@ -129,7 +135,7 @@ export default {
             outline: none;
             font-weight: 600;
             color:#0D47A1;
-            margin: 0 .5rem;
+            margin: 0 .5rem .5rem .5rem;
             &:hover {
                 box-shadow: 0 0 3px 1px #fff;
             }

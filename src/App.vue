@@ -5,18 +5,24 @@
         <div class="nav">
           <div class="user">
             <img src="https://vinyl-market.ru/images/shop_items/1558.jpg" alt="">
-            <p>{{name}}</p>
+            <div class='user__card'>
+              <p>{{name}}</p>
+              <button>ch</button>
+            </div>
           </div>
           <div class="links">
-            <div class="link">&#9993; Чат</div>
-            <div class="link">&#9783; Пользователь</div>
-            <div class="link">&#9734; О приложении</div>
-            <div v-if="isLogged" class="link" @click='signOut'>&#10006; Выйти</div>
-            <div v-else class="link" @click='openModal'>&#10154; Войти</div>
+            <router-link class="link" to='/chat'>
+              &#9993; Чат
+            </router-link>
+            <router-link class="link" to="/about">
+              &#9734; О приложении
+            </router-link>
+            <a v-if="isLogged" class="link" @click='signOut'>&#10006; Выйти</a>
+            <a v-else class="link" @click='openModal'>&#10154; Войти</a>
           </div>
         </div>
-        <div class="messages">
-
+        <div class="content">
+          <router-view />
         </div>
       </div>
     </div>
@@ -62,7 +68,7 @@ export default {
         }).catch((err) => {
           throw new Error(err)
         });
-    }
+    },
   },
   computed: {
     modal() {
@@ -194,18 +200,20 @@ export default {
   }
 
   .user {
-    margin: 2rem auto;
+    width: 100%;
+    height: 25%;
+    margin: 0;
     padding: 1rem;
     font-weight: 700;
     font-size: 1.5rem;
-    border-radius: $radius;
+    border-radius: $radius 0 $radius 0;
     color: #1E88E5;
     text-align: center;
     background: linear-gradient(
                 to right,
-               rgba(255, 255, 255, .1), 
+               rgba(255, 255, 255, .3), 
                rgba(255, 255, 255, .5),
-               rgba(255, 255, 255, .1));
+               rgba(255, 255, 255, .3));
     img {
       width: 5rem;
       border-radius: 50%;
@@ -224,8 +232,14 @@ export default {
     font-weight: 600;
     text-transform: uppercase;
     cursor: pointer;
+    text-decoration: none;
     &:hover {
       color: #3e67e9;
     }
+
+  }
+  
+  .user__card {
+
   }
 </style>

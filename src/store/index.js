@@ -4,10 +4,11 @@ const store = createStore({
     state() {
         return {
            modal: false,
-           name: 'user',
+           name: 'anonim',
            loader: false,
            user: null,
-           isLogged: false
+           isLogged: false,
+           changeUserNameForm: false
         }
     },
 
